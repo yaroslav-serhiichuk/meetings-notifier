@@ -10,10 +10,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
-
-import static java.time.temporal.ChronoUnit.SECONDS;
+import java.util.concurrent.TimeUnit;
 
 public class IndicatorClient {
 
@@ -36,12 +34,18 @@ public class IndicatorClient {
 
         var request = HttpRequest.newBuilder()
                 .uri(URI.create(indicatorUrl + "/getMeetingState"))
-                .timeout(Duration.of(timeOut, SECONDS))
                 .GET()
                 .build();
 
         return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
+                .completeOnTimeout(null, timeOut, TimeUnit.SECONDS)
+                .thenApply(r -> {
+                    if (r == null) {
+                        return "{\"meetingState\": \"-1\"}";
+                    } else {
+                        return r.body();
+                    }
+                })
                 .thenApply(value -> {
                     try {
                         var indicator = objectMapper.readValue(value, Indicator.class);
@@ -65,6 +69,13 @@ public class IndicatorClient {
                 .build();
 
         return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::statusCode);
+                .completeOnTimeout(null, timeOut, TimeUnit.SECONDS)
+                .thenApply(r -> {
+            if (r == null) {
+                return 408;
+            } else {
+                return r.statusCode();
+            }
+        });
     }
 }

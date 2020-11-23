@@ -1,5 +1,6 @@
 package org.home.notifier.ui;
 
+import org.home.notifier.common.MeetingState;
 import org.home.notifier.indicator.IndicatorClient;
 import org.home.notifier.ui.buttons.ExitButton;
 import org.home.notifier.ui.buttons.FinishMeetingButton;
@@ -8,13 +9,12 @@ import org.home.notifier.ui.buttons.StartMeetingButton;
 import org.home.notifier.ui.labels.CurrentStatusTitleLabel;
 import org.home.notifier.ui.labels.CurrentStatusValueLabel;
 import org.home.notifier.ui.service.UIComponent;
+import org.home.notifier.ui.utils.StateMonitor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
-
-import static org.home.notifier.ui.utils.ResourceImageReader.getImage;
 
 public class MainFrame extends JFrame implements UIComponent {
 
@@ -27,7 +27,7 @@ public class MainFrame extends JFrame implements UIComponent {
 
     public MainFrame() {
         super();
-        this.statusIcon = getImage("/icons/bulb-red.png");
+        this.statusIcon = MeetingState.UNKNOWN.getStatusIcon();
         this.indicatorClient = new IndicatorClient();
         initialize();
     }
@@ -89,6 +89,7 @@ public class MainFrame extends JFrame implements UIComponent {
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setVisible(true);
         defineCollaborationWithSystemTray();
+        new Thread(new StateMonitor(this, currentStatusValueLabel, indicatorClient)).start();
     }
 
     private Rectangle getScreenBounds() {
@@ -98,15 +99,15 @@ public class MainFrame extends JFrame implements UIComponent {
     }
 
     private void defineCollaborationWithSystemTray() {
-        SystemTray systemTray = SystemTray.getSystemTray();
-        PopupMenu trayPopupMenu = getSystemTrayPopupMenu();
+        var systemTray = SystemTray.getSystemTray();
+        var trayPopupMenu = getSystemTrayPopupMenu();
         trayStateListener = new TrayStateListener(systemTray, trayPopupMenu);
         this.addWindowStateListener(trayStateListener);
     }
 
     private PopupMenu getSystemTrayPopupMenu() {
-        PopupMenu popupMenu = new PopupMenu();
-        MenuItem menuItem = new MenuItem("Open");
+        var popupMenu = new PopupMenu();
+        var menuItem = new MenuItem("Open");
         menuItem.addActionListener(e -> {
             setVisible(true);
             setExtendedState(JFrame.NORMAL);

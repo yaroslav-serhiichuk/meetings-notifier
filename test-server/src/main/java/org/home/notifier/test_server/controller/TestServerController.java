@@ -27,7 +27,8 @@ public class TestServerController {
 
     @GetMapping(path = "/getMeetingState", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Indicator getState() {
+    public Indicator getState() throws InterruptedException {
+        Thread.sleep(5);
         return indicator;
     }
 

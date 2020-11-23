@@ -37,13 +37,18 @@ public abstract class ActionButton extends JButton {
             try {
                 CompletableFuture<Integer> response = indicatorClient.setIndicatorState(meetingState);
                 response.thenAccept(r -> {
-                    if (r == 202) {
-                        var statusIcon = meetingState.getStatusIcon();
-                        mainFrame.setIconImage(statusIcon);
-                        mainFrame.setStatusIcon(statusIcon);
-                        currentStatusValueLabel.setText(meetingState.toString());
-                        currentStatusValueLabel.setForeground(meetingState.getColor());
-                        mainFrame.updateTrayIcon();
+                    switch (r) {
+                        case 202:
+                            var statusIcon = meetingState.getStatusIcon();
+                            mainFrame.setIconImage(statusIcon);
+                            mainFrame.setStatusIcon(statusIcon);
+                            currentStatusValueLabel.setText(meetingState.toString());
+                            currentStatusValueLabel.setForeground(meetingState.getColor());
+                            mainFrame.updateTrayIcon();
+                            break;
+                        case 408:
+                            // ToDo Handle it
+                            break;
                     }
                 });
             } catch (JsonProcessingException ex) {
