@@ -4,7 +4,7 @@ import java.awt.*;
 
 import static org.home.notifier.ui.utils.ResourceImageReader.getImage;
 
-public enum IndicatorStatuses {
+public enum MeetingState {
 
     MEETING_STARTED {
 
@@ -95,4 +95,19 @@ public enum IndicatorStatuses {
 
     public abstract Image getStatusIcon();
 
+    public static MeetingState valueOf(int value) {
+        switch (value) {
+            case 1:
+                return MeetingState.MEETING_STARTED;
+            case 2:
+                return MeetingState.MEETING_FINISHED;
+            case 3:
+                return MeetingState.OFF;
+            case -1:
+                return MeetingState.UNKNOWN;
+            default:
+                // ToDo Handle it
+                throw new RuntimeException("Unknown indicator status");
+        }
+    }
 }

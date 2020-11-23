@@ -12,11 +12,13 @@ public class PropertiesLoader {
         if (applicationProperties == null) {
             try (InputStream input = PropertiesLoader.class.getClassLoader().getResourceAsStream("application.properties")) {
                 if (input == null) {
+                    // ToDo Handle it
                     throw new RuntimeException("Fail to find application properties");
                 }
                 applicationProperties = new Properties();
                 applicationProperties.load(input);
             } catch (IOException e) {
+                // ToDo Handle it
                 throw new RuntimeException("Fail to load application properties");
             }
         }

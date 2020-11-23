@@ -10,6 +10,7 @@ public class ResourceImageReader {
         try {
             return ImageIO.read(ResourceImageReader.class.getResource(path));
         } catch (IOException e) {
+            // ToDo Handle it
             throw new RuntimeException("Application resources missed");
         }
     }

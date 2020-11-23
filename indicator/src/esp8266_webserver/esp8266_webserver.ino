@@ -98,21 +98,21 @@ void setup(void){
           case 1:
             digitalWrite(gpio0_pin, HIGH);
             digitalWrite(gpio2_pin, LOW);
-            Serial.println("Meeting stae set to 1 \"DO NOT DISTURB\" ");
+            Serial.println("Meeting state set to 1 \"DO NOT DISTURB\" ");
             server.send(202);
             body.clear();
             break;
           case 2:
             digitalWrite(gpio0_pin, LOW);
             digitalWrite(gpio2_pin, HIGH);
-            Serial.println("Meeting stae set to 2 \"AVAILABLE\" ");
+            Serial.println("Meeting state set to 2 \"AVAILABLE\" ");
             server.send(202);
             body.clear();
             break;
           case 3:
             digitalWrite(gpio0_pin, LOW);
             digitalWrite(gpio2_pin, LOW);
-            Serial.println("Meeting stae set to 3 \"OFF\" ");
+            Serial.println("Meeting state set to 3 \"OFF\" ");
             server.send(202);
             body.clear();
             break;

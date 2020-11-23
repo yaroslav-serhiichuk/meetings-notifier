@@ -4,12 +4,23 @@ import org.home.notifier.ui.service.UIComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ExitButton extends JButton implements UIComponent {
 
     public ExitButton() {
         super();
+        this.addActionListener(new ButtonActionListener());
         initialize();
+    }
+
+    private static class ButtonActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
     }
 
     @Override

@@ -1,14 +1,20 @@
 package org.home.notifier.ui.buttons;
 
+import org.home.notifier.common.MeetingState;
+import org.home.notifier.indicator.IndicatorClient;
+import org.home.notifier.ui.MainFrame;
+import org.home.notifier.ui.labels.CurrentStatusValueLabel;
 import org.home.notifier.ui.service.UIComponent;
 
-import javax.swing.*;
 import java.awt.*;
 
-public class IndicatorOffButton extends JButton implements UIComponent {
+public class IndicatorOffButton extends ActionButton implements UIComponent {
 
-    public IndicatorOffButton() {
-        super();
+    public IndicatorOffButton(final MainFrame mainFrame,
+                              final CurrentStatusValueLabel currentStatusValueLabel,
+                              final IndicatorClient indicatorClient) {
+
+        super(MeetingState.OFF, mainFrame, currentStatusValueLabel, indicatorClient);
         initialize();
     }
 
